@@ -1,0 +1,71 @@
+@model TodoApp.Models.TodoItem
+
+@{
+    ViewData["Title"] = "刪除待辦事項";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h2>刪除待辦事項</h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>警告：</strong>您確定要刪除這個待辦事項嗎？此操作無法復原。
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-3">標題</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+                        <dt class="col-sm-3">描述</dt>
+                        <dd class="col-sm-9">
+                            @if (string.IsNullOrWhiteSpace(Model.Description))
+                            {
+                                <span class="text-muted">無描述</span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.Description)
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">狀態</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsCompleted)
+                            {
+                                <span class="badge bg-success">已完成</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">未完成</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">建立時間</dt>
+                        <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+                        @if (Model.CompletedAt.HasValue)
+                        {
+                            <dt class="col-sm-3">完成時間</dt>
+                            <dd class="col-sm-9">@Model.CompletedAt.Value.ToString("yyyy-MM-dd HH:mm:ss")</dd>
+                        }
+                    </dl>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> 確認刪除
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> 取消
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
